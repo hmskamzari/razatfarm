@@ -1,3 +1,9 @@
+[phases.install]
+cmds = [
+    "composer install --optimize-autoloader --no-scripts --no-interaction",
+    "npm install --ignore-scripts"
+]
+
 [phases.build]
 cmds = ["npm run build"]
 
