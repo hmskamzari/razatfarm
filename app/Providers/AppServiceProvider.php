@@ -39,9 +39,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Email::class, EmailPolicy::class);
 
         // Force HTTPS if you are on production SSL
-        // if (config('app.env') === 'production' || str_contains(config('app.url'), 'https://')) {
-        //     URL::forceScheme('https');
-        // }
+        if (config('app.env') === 'production' || str_contains(config('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
 
         // Force Laravel to generate asset/action URLs with the /events prefix.
         // This is not gated by APP_ENV because the app is always served from the
