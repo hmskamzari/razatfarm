@@ -1,12 +1,12 @@
-FROM php:8.2-cli
+FROM php:8.3-cli
 
 WORKDIR /app
 
-# System dependencies + PHP extensions (intl requires libicu-dev)
+# System deps + PHP extensions
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libonig-dev libxml2-dev libzip-dev libpng-dev libicu-dev \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install pdo_mysql mbstring xml zip ctype gd intl \
+    && docker-php-ext-install pdo_mysql mbstring xml zip ctype gd intl opcache \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Composer
