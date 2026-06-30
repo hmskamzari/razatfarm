@@ -1,1 +1,1 @@
-<img src="{{ asset('storage/images/horizontalLogo-02.svg') }}" alt="Custom Logo" class="h-80">
+<img src="{{ asset('storage/images/horizontalLogo-02.png') }}" alt="Razat Royal Farm Trail" class="h-80">

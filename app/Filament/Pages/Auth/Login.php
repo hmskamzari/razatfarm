@@ -14,7 +14,6 @@ class Login extends BaseLogin
             $this->getEmailFormComponent(),
             $this->getPasswordFormComponent(),
             $this->getRememberFormComponent(),
-            CaptchaField::make('captcha'),
         ]);
     }
 }

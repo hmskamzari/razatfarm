@@ -3,13 +3,23 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\EventBooking;
 use App\Models\Event;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ThawaniCallbackController;
 use App\Http\Controllers\NboCallbackController;
 
-Route::get('/', function () {
-    $events = Event::published()->upcoming()->get();
-    return view('welcome', compact('events'));
-});
+Route::get('/', [PageController::class, 'home'])->name('home');
+
+Route::get('/about', fn () => app(PageController::class)->show('about'))->name('page.about');
+Route::get('/visit-terms', fn () => app(PageController::class)->show('visit-terms'))->name('page.visit-terms');
+
+Route::get('/contact', fn () => app(PageController::class)->show('contact'))->name('page.contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+Route::get('/events', function () {
+    $events = Event::published()->upcoming()->orderBy('start_date')->get();
+    return view('pages.events-index', ['events' => $events, 'siteSetting' => \App\Models\SiteSetting::current()]);
+})->name('events.index');
 
 Route::get('/events/{event:slug}', EventBooking::class)->name('event.booking');
 

@@ -1,0 +1,246 @@
+/* ───────────────────────────────────────────────────────────────────────
+   Razat Royal Farm — public site design tokens & decorative utilities
+   Aesthetic: "Royal Heritage Garden" — warm ivory, deep royal green,
+   antique gold accents, editorial serif display type, organic dividers.
+   ─────────────────────────────────────────────────────────────────────── */
+
+@import 'tailwindcss';
+
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-display: 'Fraunces', 'El Messiri', ui-serif, Georgia, serif;
+    --font-display-ar: 'El Messiri', 'Fraunces', ui-serif, Georgia, serif;
+    --font-body: 'Work Sans', 'Tajawal', ui-sans-serif, system-ui, sans-serif;
+    --font-body-ar: 'Tajawal', 'Work Sans', ui-sans-serif, system-ui, sans-serif;
+
+    --color-brand: #05602b;
+    --color-brand-dark: #033d1c;
+    --color-brand-light: #0da74c;
+    --color-gold: #b8924a;
+    --color-gold-light: #e3c98f;
+    --color-ivory: #fbf8f2;
+    --color-ivory-deep: #f3ecdd;
+    --color-ink: #16261c;
+}
+
+html.site {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    scroll-behavior: smooth;
+}
+
+html.site[dir='rtl'] {
+    font-family: var(--font-body-ar);
+}
+
+.site .font-display {
+    font-family: var(--font-display);
+}
+
+html.site[dir='rtl'] .site .font-display,
+.site[dir='rtl'] .font-display {
+    font-family: var(--font-display-ar);
+}
+
+/* Subtle paper-grain texture overlay used behind hero / dark sections */
+.site-grain {
+    position: relative;
+}
+
+.site-grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Gold rule accent under section headings */
+.site-rule {
+    display: inline-block;
+    width: 3.5rem;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
+}
+
+[dir='rtl'] .site-rule {
+    transform: scaleX(-1);
+}
+
+/* Organic wave divider between sections */
+.site-wave {
+    display: block;
+    width: 100%;
+    height: 64px;
+    color: var(--color-ivory);
+}
+
+.site-wave-brand {
+    color: var(--color-brand);
+}
+
+/* Scroll-reveal: elements start hidden, JS adds .is-visible on intersect */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-up {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* Manuscript-style numbered terms list */
+.site-terms ol {
+    list-style: none;
+    counter-reset: term;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.site-terms ol > li {
+    counter-increment: term;
+    position: relative;
+    padding-inline-start: 3.25rem;
+    line-height: 1.7;
+}
+
+[dir='rtl'] .site-terms ol > li {
+    padding-inline-start: 0;
+    padding-inline-end: 3.25rem;
+}
+
+.site-terms ol > li::before {
+    content: counter(term);
+    position: absolute;
+    inset-inline-start: 0;
+    top: -0.1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1.5px solid var(--color-gold);
+    color: var(--color-brand-dark);
+    font-family: var(--font-display);
+    font-size: 1rem;
+}
+
+.site-terms ul {
+    list-style: disc;
+    padding-inline-start: 1.5rem;
+}
+
+.site-terms p {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Hero slider fade transition */
+.hero-slide {
+    opacity: 0;
+    transition: opacity 1.1s ease-in-out;
+}
+
+.hero-slide.is-active {
+    opacity: 1;
+}
+
+/* Icon-feature card: lift + bouncy pop-in */
+.feature-card {
+    overflow: hidden;
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.45s ease, ring-color 0.45s ease;
+}
+
+.feature-card.reveal-up {
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 28px 52px -18px rgba(5, 96, 43, 0.28);
+}
+
+/* Diagonal shine sweep across the card on hover */
+.feature-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 38%, rgba(227, 201, 143, 0.45) 50%, transparent 62%);
+    background-size: 250% 250%;
+    background-position: -120% -120%;
+    transition: background-position 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.feature-card:hover .feature-shine {
+    background-position: 120% 120%;
+}
+
+/* Expanding gold ring "ping" behind the icon badge */
+.feature-ring {
+    border: 1.5px solid var(--color-gold);
+    opacity: 0;
+}
+
+.group:hover .feature-ring {
+    animation: feature-ring-ping 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes feature-ring-ping {
+    0% {
+        transform: scale(0.75);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(1.9);
+        opacity: 0;
+    }
+}
+
+/* Icon wiggle-bounce on hover */
+.group:hover .feature-icon {
+    animation: feature-icon-wiggle 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes feature-icon-wiggle {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    30% {
+        transform: rotate(-10deg) scale(1.12);
+    }
+    65% {
+        transform: rotate(8deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(0deg) scale(1.05);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .feature-card,
+    .feature-badge,
+    .feature-shine,
+    .feature-icon {
+        animation: none !important;
+        transition: none !important;
+    }
+}

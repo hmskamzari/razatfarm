@@ -50,11 +50,13 @@ class AppServiceProvider extends ServiceProvider
 
         // Direct Livewire to send its network polling/submits through the alias
         Livewire::setUpdateRoute(function ($handle) {
-            return Route::post('/events/livewire/update', $handle);
+            return Route::post('/events/livewire/update', $handle)
+                ->middleware('web');
         });
 
         Livewire::setScriptRoute(function ($handle) {
-            return Route::get('/events/livewire/livewire.js', $handle);
+            return Route::get('/events/livewire/livewire.js', $handle)
+                ->middleware('web');
         });
 
         //
