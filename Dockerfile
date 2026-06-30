@@ -29,7 +29,7 @@ RUN npm install --ignore-scripts && npm run build && rm -rf node_modules
 EXPOSE 8080
 
 CMD php artisan migrate --force && \
-    php artisan db:seed --class=CmsSeeder --force && \
+    php artisan db:seed --force && \
     php artisan storage:link --force && \
     php artisan shield:generate --all --panel=admin --no-interaction && \
     php artisan permission:cache-reset && \
