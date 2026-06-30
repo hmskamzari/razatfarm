@@ -14,8 +14,6 @@ use Spatie\Health\Checks\Checks\QueueCheck;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Illuminate\Support\Facades\URL;
-use Livewire\Livewire;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Gate;
 use RickDBCN\FilamentEmail\Models\Email;
 use App\Policies\EmailPolicy;
@@ -43,21 +41,8 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        // Force Laravel to generate asset/action URLs with the /events prefix.
-        // This is not gated by APP_ENV because the app is always served from the
-        // /events subdirectory via an Apache Alias, regardless of environment.
+        // Force Laravel to generate asset/action URLs with the configured app URL.
         URL::forceRootUrl(config('app.url'));
-
-        // Direct Livewire to send its network polling/submits through the alias
-        Livewire::setUpdateRoute(function ($handle) {
-            return Route::post('/events/livewire/update', $handle)
-                ->middleware('web');
-        });
-
-        Livewire::setScriptRoute(function ($handle) {
-            return Route::get('/events/livewire/livewire.js', $handle)
-                ->middleware('web');
-        });
 
         //
         Health::checks([
