@@ -2,10 +2,11 @@ FROM php:8.2-cli
 
 WORKDIR /app
 
-# System dependencies + PHP extensions
+# System dependencies + PHP extensions (intl requires libicu-dev)
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip libonig-dev libxml2-dev libzip-dev libpng-dev \
-    && docker-php-ext-install pdo_mysql mbstring xml zip ctype gd \
+    git curl zip unzip libonig-dev libxml2-dev libzip-dev libpng-dev libicu-dev \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install pdo_mysql mbstring xml zip ctype gd intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Composer
@@ -19,7 +20,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
 COPY . .
 
 # PHP deps
-RUN composer install --optimize-autoloader --no-scripts --no-interaction --no-dev
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install \
+    --optimize-autoloader --no-scripts --no-interaction --no-dev
 
 # JS deps + build
 RUN npm install --ignore-scripts && npm run build && rm -rf node_modules
