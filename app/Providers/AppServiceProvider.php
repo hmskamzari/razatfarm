@@ -14,6 +14,8 @@ use Spatie\Health\Checks\Checks\QueueCheck;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 use Illuminate\Support\Facades\Gate;
 use RickDBCN\FilamentEmail\Models\Email;
 use App\Policies\EmailPolicy;
@@ -43,6 +45,16 @@ class AppServiceProvider extends ServiceProvider
 
         // Force Laravel to generate asset/action URLs with the configured app URL.
         URL::forceRootUrl(config('app.url'));
+
+        // Explicitly register Livewire routes with web middleware.
+        // Auto-detection is unreliable; explicit registration is more robust.
+        Livewire::setUpdateRoute(function ($handle) {
+            return Route::post('/livewire/update', $handle)->middleware('web');
+        });
+
+        Livewire::setScriptRoute(function ($handle) {
+            return Route::get('/livewire/livewire.js', $handle)->middleware('web');
+        });
 
         //
         Health::checks([
